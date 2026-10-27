@@ -83,9 +83,9 @@ A reset requires confirmation and deletes local creations and progress. If stora
 
 ## Publish to GitHub Pages
 
-No remote repository or public deployment has been created; no destination was supplied. The local project includes CI and a Pages workflow using official upload/deploy actions.
+Source repository: [huohuoxi/kindred](https://github.com/huohuoxi/kindred). The source has been pushed to `main`. The project includes CI and a Pages workflow using official upload/deploy actions; a live Pages deployment has not yet been verified.
 
-1. Create your intended GitHub repository; initialize this folder as a Git repository if needed, add that repository as `origin`, and push the source and lockfile to its default branch.
+1. The original checkout is connected to `git@github.com:huohuoxi/kindred.git`, and `main` tracks `origin/main`. Push subsequent committed changes with `git push`. For your own copy, use a fork or a repository you control.
 2. In repository **Settings → Pages → Build and deployment**, choose **GitHub Actions**.
 3. Push to the default branch, or manually run **Deploy to GitHub Pages** from that branch. Deployment is restricted to the repository’s default branch, including manual dispatches.
 4. For repository hosting, the workflow derives `/<repository-name>/`. Account-root repositories ending in `.github.io` use `/`.
