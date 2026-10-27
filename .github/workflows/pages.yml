@@ -1,0 +1,51 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Determine base path
+        env:
+          CONFIGURED_BASE: ${{ vars.BASE_PATH }}
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+        run: |
+          if [ -n "$CONFIGURED_BASE" ]; then
+            echo "BASE_PATH=$CONFIGURED_BASE" >> "$GITHUB_ENV"
+          elif [[ "$REPOSITORY_NAME" == *.github.io ]]; then
+            echo 'BASE_PATH=/' >> "$GITHUB_ENV"
+          else
+            echo "BASE_PATH=/$REPOSITORY_NAME/" >> "$GITHUB_ENV"
+          fi
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: build
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
