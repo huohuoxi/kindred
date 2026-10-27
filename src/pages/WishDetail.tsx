@@ -58,7 +58,7 @@ export function WishDetail({ id }: { id: string }) {
   return <Detail key={wish.id} wish={wish} />;
 }
 function Detail({ wish: w }: { wish: Wish }) {
-  const { t, date, wishText } = useLocale();
+  const { t, date, language, wishText } = useLocale();
   const { state, run, inform } = useApp();
   const [share, setShare] = useState(() => location.hash.endsWith("?share=1"));
   const [evidence, setEvidence] = useState(false);
@@ -146,7 +146,7 @@ function Detail({ wish: w }: { wish: Wish }) {
                 {t("A promise by ")}
                 <strong>{t(state.users[w.creator].name)}</strong>
                 <small>
-                  {t("Created ")}
+                  {language === "zh" ? `${t("Created on")} ` : "Created "}
                   {t(date(w.createdAt))}
                 </small>
               </span>
@@ -159,11 +159,16 @@ function Detail({ wish: w }: { wish: Wish }) {
               <em>{t("If")}</em> {wishText(w, "condition")}
             </h2>
             <p>
-              <em>{t("Then")}</em> {t(money(w.committed))}
-              {t(" in demo gifts.")}
-              {t(" ")}
-              {t(distributionText(d))}
-              {t(".")}
+              {language === "zh" ? (
+                <>
+                  我会送出 {money(w.committed)} 礼金，{t(distributionText(d))}。
+                </>
+              ) : (
+                <>
+                  <em>Then</em> {money(w.committed)} in demo gifts.{" "}
+                  {distributionText(d)}.
+                </>
+              )}
             </p>
             <div className="detail-facts">
               <span>
@@ -208,7 +213,7 @@ function Detail({ wish: w }: { wish: Wish }) {
                 <p>
                   {t("The event must occur on or before ")}
                   {t(date(w.deadline))}
-                  {t(".")}
+                  {language === "zh" ? "。" : "."}
                 </p>
               </div>
               <div>
@@ -483,7 +488,7 @@ function Detail({ wish: w }: { wish: Wish }) {
               <p className="fine-print">
                 {t("Enrollment permanently closed: ")}
                 {t(date(w.closedAt))}
-                {t(".")}
+                {language === "zh" ? "。" : "."}
               </p>
             )}
           </section>
@@ -756,7 +761,7 @@ function Detail({ wish: w }: { wish: Wish }) {
                 {t(". Event deadline:")}
                 {t(" ")}
                 {t(date(w.deadline))}
-                {t(".")}
+                {language === "zh" ? "。" : "."}
               </small>
             </label>
             <div className="inline-note">

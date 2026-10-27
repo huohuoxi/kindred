@@ -59,9 +59,9 @@ export function Discover({ startGuide }: { startGuide: () => void }) {
           <h1>
             {language === "zh" ? (
               <>
-                为值得<em>庆祝的未来，</em>
+                愿望成真，
                 <br />
-                许下一个愿望。
+                开心<em>有你一份。</em>
               </>
             ) : (
               <>

@@ -20,20 +20,20 @@ describe("language preference and presentation", () => {
     ).toBe("zh");
   });
   it("translates UI labels and seeded example text without changing English mode", () => {
-    expect(translate("Create a wish", "zh")).toBe("创建愿望");
+    expect(translate("Create a wish", "zh")).toBe("发起愿望");
     expect(translate("Create a wish", "en")).toBe("Create a wish");
     expect(translate("A greener block, a little gift.", "zh")).toBe(
-      "街区更绿了，心意也到了。",
+      "社区添新绿，咖啡我来请。",
     );
   });
   it("keeps monetary parameters exact and translates singular participant counts", () => {
     expect(translate("Commit $0.29 demo funds", "zh")).toBe(
-      "承诺投入 $0.29 演示资金",
+      "确认预留 $0.29 礼金",
     );
-    expect(translate("1 person joined", "zh")).toBe("1 人已加入");
-    expect(translate("2 people joined", "zh")).toBe("2 人已加入");
+    expect(translate("1 person joined", "zh")).toBe("1 人已报名");
+    expect(translate("2 people joined", "zh")).toBe("2 人已报名");
     expect(translate("$10 each · first 3 people", "zh")).toBe(
-      "前 3 位参与者每人 $10",
+      "前 3 位报名，每人 $10",
     );
   });
   it("keeps personal-gift restrictions in the complete translated message", () => {
@@ -42,7 +42,7 @@ describe("language preference and presentation", () => {
         "A personal gift for Maya Chen. Public enrollment is unavailable.",
         "zh",
       ),
-    ).toBe("这是送给玛雅·陈的专属礼物，不开放公开加入。");
+    ).toBe("这份礼物只送给陈悦，不开放报名。");
   });
   it("preserves arbitrary custom text, non-text children, and replacement-symbol text", () => {
     expect(translate("我的自定义愿望 and my own words", "zh")).toBe(

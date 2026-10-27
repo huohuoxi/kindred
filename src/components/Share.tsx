@@ -14,19 +14,21 @@ export function Share({ wish, onClose }: { wish: Wish; onClose: () => void }) {
   const text = [
     wishText(wish, "title"),
     language === "zh"
-      ? `如果：${wishText(wish, "condition")}`
+      ? `这次的约定：${wishText(wish, "condition")}`
       : `If ${wish.condition}`,
     language === "zh"
-      ? `那么：送出 ${money(wish.committed)} 演示礼物，${t(distributionText(wish.distribution))}。`
+      ? `礼物安排：共 ${money(wish.committed)} 演示礼金，${t(distributionText(wish.distribution))}。`
       : `Then ${money(wish.committed)} in demo gifts: ${distributionText(wish.distribution)}.`,
-    `${t("Deadline")}: ${date(wish.deadline)}`,
+    language === "zh"
+      ? `达成截止：${date(wish.deadline)}`
+      : `Deadline: ${date(wish.deadline)}`,
     t(
       wish.seeded
         ? "Explore this illustrative promise. Progress is stored separately in each browser."
         : "This wish is browser-local. Live participation is not synchronized. Explore the demo homepage to try your own.",
     ),
     language === "zh"
-      ? "互动演示，不涉及真实资金，参与完全免费。"
+      ? "体验说明：人物、事件和资金往来均为演示，参与不花钱。"
       : "Interactive demo. No real money. Joining is free.",
     url,
   ].join("\n");

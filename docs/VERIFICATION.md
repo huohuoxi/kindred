@@ -47,10 +47,16 @@ Screenshots in `docs/screenshots/` are actual browser captures, not mockups.
 
 Reduced-motion behavior is implemented with CSS and was inspected in source; a separate operating-system reduced-motion preference was not toggled. Native Web Share’s external destination flow was not completed. Clipboard-denial and storage-quota failures are handled in code but were not forced through browser settings. This is not a full assistive-technology or cross-browser certification.
 
-The GitHub workflows and publishing instructions are prepared locally. GitHub authentication, remote repository creation, actual Actions execution, DNS, and public deployment remain unperformed because no destination was supplied. No public repository or live-demo URL is claimed.
+The source repository was subsequently published at https://github.com/huohuoxi/kindred using the existing GitHub SSH identity. The GitHub workflows are prepared; Actions execution, DNS, and a public website deployment have not been verified. No live-demo URL is claimed.
 
 ## Chinese interface follow-up
 
 The localization suite adds eight checks for the default Chinese preference, explicit English preference, unavailable storage, dictionary behavior, exact monetary interpolation, participant singular/plural forms, personal-gift restrictions, custom text, and UTC date presentation. The complete suite now has **51 passing tests**.
 
 Browser checks confirmed first-visit Chinese, English preference after reload, one-click return to Chinese, Chinese search, Chinese inline validation, four-step creation review, and preservation of a typed draft while switching languages. Seeded detail and share text were checked in Chinese. The 390px Chinese homepage had no horizontal overflow. The existing wallet balance and seeded demo progress were retained throughout. Chinese desktop/mobile screenshots are saved alongside the original English captures.
+
+## Native Chinese copy follow-up
+
+The Chinese edition now uses original Chinese product copy throughout the dictionary and dynamic messages. Characters appear as 陈悦、林舟、周宁 with surname avatars; neighborhood, sports, science, concert, and library stories use natural Chinese names and narratives. Repeated fictional qualifiers were removed from story text, while the shared demo notice, share text, and FAQ retain an explicit explanation of simulated identities, events, and funds. Creation, evidence, result review, disputes, wallet activity, errors, and empty states use consistent terminology. Custom wish content, canonical identities, USD amounts, UTC instants, and domain rules are unchanged.
+
+Browser checks covered the homepage, seeded detail and share content, all four creation steps, and English/Chinese switching with a typed Chinese title retained. A 390px mobile viewport showed no horizontal overflow. The wallet and six seeded wishes were retained without funding or settling any new wish. Updated desktop/mobile screenshots are saved in `docs/screenshots/`. The complete automated suite passes (51 tests), along with TypeScript and the production build.

@@ -82,7 +82,7 @@ export function Avatar({
   user: string;
   small?: boolean;
 }) {
-  const { t } = useLocale();
+  const { t, language } = useLocale();
   const { state } = useApp();
   const person = state.users[user];
   return (
@@ -91,12 +91,12 @@ export function Avatar({
       style={{ backgroundColor: person?.color }}
       aria-label={t(person?.name)}
     >
-      {t(
-        person?.name
-          .split(" ")
-          .map((n) => n[0])
-          .join(""),
-      )}
+      {language === "zh"
+        ? t(person?.name)?.slice(0, 1)
+        : person?.name
+            .split(" ")
+            .map((name) => name[0])
+            .join("")}
     </span>
   );
 }

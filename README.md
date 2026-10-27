@@ -35,7 +35,7 @@ npm run preview
 
 ## Language / 界面语言
 
-首次打开默认使用简体中文。点击页头的 **English / 中文** 即可一键切换，语言偏好独立保存在 `kindred-language-v1`，刷新后仍然有效。切换不重置页面、表单草稿、钱包或演示进度。示例内容提供中文展示，自行填写的愿望内容保留原文。金额仍以美元计，所有截止时间仍按 UTC 解释。
+首次打开默认使用简体中文。点击页头的 **English / 中文** 即可一键切换，语言偏好独立保存在 `kindred-language-v1`，刷新后仍然有效。切换不重置页面、表单草稿、钱包或演示进度。中文文案按本地表达重写，体验人物为陈悦、林舟、周宁，案例、表单、规则、分享和提示统一采用自然中文。演示性质集中在体验提示和说明中交代。自行填写的愿望内容保留原文。金额仍以美元计，所有截止时间仍按 UTC 解释。
 
 First visits default to Simplified Chinese. Use **English / 中文** in the header to switch instantly. Language preference is separate from demo state; switching preserves the current route, draft, and progress. New custom wish text retains its original language. USD and UTC semantics are unchanged.
 

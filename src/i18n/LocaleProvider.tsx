@@ -22,7 +22,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     description?.setAttribute(
       "content",
       language === "zh"
-        ? "为值得庆祝的未来，许下一个愿望。承诺礼物，邀请大家；条件达成，送出心意。纯浏览器互动演示，不涉及真实资金。"
+        ? "愿望成真，开心有你一份。先备好礼物，邀朋友一起期待：约好的事成了，礼物就送出。Kindred 体验版，不涉及真实支付。"
         : "Make a promise to a future worth celebrating. Commit a simulated gift, invite your people, and explore conditional social gifting with Kindred.",
     );
   }, [language]);

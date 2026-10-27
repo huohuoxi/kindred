@@ -44,7 +44,7 @@ type Form = {
   source: string;
 };
 export function Create() {
-  const { t, date } = useLocale();
+  const { t, date, language } = useLocale();
   const { state, run, clearError } = useApp();
   const actor = state.currentUser;
   const blank: Form = {
@@ -496,12 +496,19 @@ export function Create() {
                 <strong>{t(money(total))}</strong>
               </div>
               <p className="muted">
-                {t("Available to ")}
-                {t(state.users[actor].name.split(" ")[0])}
-                {t(":")}
-                {t(" ")}
-                {t(money(balance(state, wallet(actor))))}
-                {t(". No fees or interest in this demo.")}
+                {language === "zh" ? (
+                  <>
+                    {t(state.users[actor].name)}当前可用{" "}
+                    {money(balance(state, wallet(actor)))}
+                    。体验版不收手续费，也不计利息。
+                  </>
+                ) : (
+                  <>
+                    Available to {state.users[actor].name.split(" ")[0]}:{" "}
+                    {money(balance(state, wallet(actor)))}. No fees or interest
+                    in this demo.
+                  </>
+                )}
               </p>
             </>
           )}
@@ -558,11 +565,17 @@ export function Create() {
                 <dd>{t(date(fromDateInput(form.deadline)))}</dd>
                 <dt>{t("The gift")}</dt>
                 <dd>
-                  {t(distributionText(buildTerms().distribution))}
-                  {t(" \u00B7 ")}
-                  {t(money(total))}
-                  {t(" ")}
-                  {t("total")}
+                  {language === "zh" ? (
+                    <>
+                      共 {money(total)}，
+                      {t(distributionText(buildTerms().distribution))}。
+                    </>
+                  ) : (
+                    <>
+                      {distributionText(buildTerms().distribution)} ·{" "}
+                      {money(total)} total
+                    </>
+                  )}
                 </dd>
                 <dt>{t("Evidence requirements")}</dt>
                 <dd>{form.criteria}</dd>
