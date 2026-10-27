@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/context";
 import { useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import {
@@ -24,7 +25,6 @@ import {
   balance,
   termsSchema,
   commitment,
-  date,
   distributionText,
 } from "../domain/model";
 import type { Distribution, Terms } from "../domain/model";
@@ -44,6 +44,7 @@ type Form = {
   source: string;
 };
 export function Create() {
+  const { t, date } = useLocale();
   const { state, run, clearError } = useApp();
   const actor = state.currentUser;
   const blank: Form = {
@@ -59,7 +60,7 @@ export function Create() {
     criteria: "",
     source: "",
   };
-  const template = (type: string): Form =>
+  const englishTemplate = (type: string): Form =>
     type === "personal"
       ? {
           ...blank,
@@ -100,6 +101,16 @@ export function Create() {
               "A dated and signed planting log lists 10 tree locations and confirms planting on or before the deadline.",
             source: "https://example.org/oak-street/planting-log",
           };
+  const template = (kind: string): Form => {
+    const value = englishTemplate(kind);
+    return {
+      ...value,
+      title: t(value.title),
+      story: t(value.story),
+      condition: t(value.condition),
+      criteria: t(value.criteria),
+    };
+  };
   const [form, setForm] = useState<Form>(() =>
     location.hash.includes("template=")
       ? template(location.hash.split("template=")[1])
@@ -207,13 +218,15 @@ export function Create() {
     hint?: string,
   ) => (
     <label className="field">
-      {label}
-      {input}
-      {hint && <small>{hint}</small>}
-      {errors[name] && (
-        <span id={`error-${name}`} className="field-error">
-          {errors[name]}
-        </span>
+      {t(label)}
+      {t(input)}
+      {t(hint && <small>{t(hint)}</small>)}
+      {t(
+        errors[name] && (
+          <span id={`error-${name}`} className="field-error">
+            {t(errors[name])}
+          </span>
+        ),
       )}
     </label>
   );
@@ -247,12 +260,16 @@ export function Create() {
     <div className="create-page">
       <a className="back-link" href="#/">
         <ArrowLeft size={16} />
-        Back to wishes
+        {t("Back to wishes")}
       </a>
       <div className="page-heading">
-        <span className="eyebrow">A LITTLE PROMISE CAN MEAN A LOT.</span>
-        <h1>What future will you celebrate?</h1>
-        <p>Make it meaningful. Make it clear. We’ll help with the rest.</p>
+        <span className="eyebrow">{t("A LITTLE PROMISE CAN MEAN A LOT.")}</span>
+        <h1>{t("What future will you celebrate?")}</h1>
+        <p>
+          {t(
+            "Make it meaningful. Make it clear. We\u2019ll help with the rest.",
+          )}
+        </p>
       </div>
       <ol className="wizard-steps">
         {steps.map((name, i) => (
@@ -262,17 +279,21 @@ export function Create() {
             aria-current={i === step ? "step" : undefined}
           >
             <span>{i < step ? <Check size={16} /> : i + 1}</span>
-            {name}
+            {t(name)}
           </li>
         ))}
       </ol>
       <div className="create-grid">
         <form className="form-panel" onSubmit={submit} noValidate>
-          <div className="step-label">STEP {step + 1} OF 4</div>
-          <h2>{steps[step]}</h2>
+          <div className="step-label">
+            {t("STEP ")}
+            {step + 1}
+            {t(" OF 4")}
+          </div>
+          <h2>{t(steps[step])}</h2>
           {step === 0 && (
             <>
-              <p>Start with a moment that matters to you.</p>
+              <p>{t("Start with a moment that matters to you.")}</p>
               <div className="template-buttons">
                 {[
                   ["community", "Community", Sprout],
@@ -290,13 +311,15 @@ export function Create() {
                       }}
                     >
                       <I size={17} />
-                      {String(label)}
+                      {t(String(label))}
                     </button>
                   );
                 })}
               </div>
               <small className="muted">
-                Optional templates fill the form. Nothing is published yet.
+                {t(
+                  "Optional templates fill the form. Nothing is published yet.",
+                )}
               </small>
               {field(
                 "title",
@@ -305,7 +328,7 @@ export function Create() {
                   {...attrs("title")}
                   value={form.title}
                   maxLength={100}
-                  placeholder="A greener block, a little gift."
+                  placeholder={t("A greener block, a little gift.")}
                   onChange={(e) => update("title", e.target.value)}
                 />,
               )}
@@ -319,7 +342,9 @@ export function Create() {
                   }
                 >
                   {categories.map((c) => (
-                    <option key={c}>{c}</option>
+                    <option key={c} value={c}>
+                      {t(c)}
+                    </option>
                   ))}
                 </select>,
               )}
@@ -331,7 +356,7 @@ export function Create() {
                   value={form.story}
                   maxLength={800}
                   rows={3}
-                  placeholder="The story behind your promise…"
+                  placeholder={t("The story behind your promise…")}
                   onChange={(e) => update("story", e.target.value)}
                 />,
               )}
@@ -343,7 +368,9 @@ export function Create() {
                   value={form.condition}
                   maxLength={500}
                   rows={3}
-                  placeholder="A precise event that can be checked objectively."
+                  placeholder={t(
+                    "A precise event that can be checked objectively.",
+                  )}
                   onChange={(e) => update("condition", e.target.value)}
                 />,
                 "Name the event, who is involved, and what counts as success.",
@@ -364,10 +391,12 @@ export function Create() {
           {step === 1 && (
             <>
               <p>
-                One creator. One fully committed gift. Free for everyone else.
+                {t(
+                  "One creator. One fully committed gift. Free for everyone else.",
+                )}
               </p>
               <fieldset className="mode-options">
-                <legend className="sr-only">Distribution mode</legend>
+                <legend className="sr-only">{t("Distribution mode")}</legend>
                 {(
                   [
                     {
@@ -403,8 +432,8 @@ export function Create() {
                     />
                     <Icon size={21} />
                     <span>
-                      <strong>{title}</strong>
-                      <small>{text}</small>
+                      <strong>{t(title)}</strong>
+                      <small>{t(text)}</small>
                     </span>
                   </label>
                 ))}
@@ -415,7 +444,7 @@ export function Create() {
                   ? "Gift per person · USD"
                   : "Total gift · USD",
                 <div className="money-input">
-                  <span>$</span>
+                  <span>{t("$")}</span>
                   <input
                     {...attrs("amount")}
                     inputMode="decimal"
@@ -450,32 +479,35 @@ export function Create() {
                       .filter((u) => u.id !== actor)
                       .map((u) => (
                         <option key={u.id} value={u.id}>
-                          {u.name}
+                          {t(u.name)}
                         </option>
                       ))}
                   </select>,
                 )}
               {form.mode === "split" && (
                 <div className="inline-note">
-                  The per-person amount is an estimate until enrollment closes.
-                  Leftover cents go in enrollment order. Very small pools may
-                  produce $0 shares.
+                  {t(
+                    "The per-person amount is an estimate until enrollment closes. Leftover cents go in enrollment order. Very small pools may produce $0 shares.",
+                  )}
                 </div>
               )}
               <div className="funding-total">
-                <span>Total demo commitment</span>
-                <strong>{money(total)}</strong>
+                <span>{t("Total demo commitment")}</span>
+                <strong>{t(money(total))}</strong>
               </div>
               <p className="muted">
-                Available to {state.users[actor].name.split(" ")[0]}:{" "}
-                {money(balance(state, wallet(actor)))}. No fees or interest in
-                this demo.
+                {t("Available to ")}
+                {t(state.users[actor].name.split(" ")[0])}
+                {t(":")}
+                {t(" ")}
+                {t(money(balance(state, wallet(actor))))}
+                {t(". No fees or interest in this demo.")}
               </p>
             </>
           )}
           {step === 2 && (
             <>
-              <p>Good promises start with a clear way to know.</p>
+              <p>{t("Good promises start with a clear way to know.")}</p>
               {field(
                 "criteria",
                 "What evidence will count?",
@@ -485,7 +517,9 @@ export function Create() {
                   maxLength={800}
                   value={form.criteria}
                   onChange={(e) => update("criteria", e.target.value)}
-                  placeholder="Describe the document, official record, or result needed to confirm the condition."
+                  placeholder={t(
+                    "Describe the document, official record, or result needed to confirm the condition.",
+                  )}
                 />,
               )}
               {field(
@@ -495,53 +529,57 @@ export function Create() {
                   {...attrs("source")}
                   type="url"
                   value={form.source}
-                  placeholder="https://example.org/official-results"
+                  placeholder={t("https://example.org/official-results")}
                   onChange={(e) => update("source", e.target.value)}
                 />,
               )}
               <div className="inline-note">
                 <LockKeyhole size={19} />
                 <span>
-                  Evidence can arrive up to 72 hours after the event deadline.
-                  The event must still occur by the original deadline. A
-                  proposal opens a 24-hour objection window.
+                  {t(
+                    "Evidence can arrive up to 72 hours after the event deadline. The event must still occur by the original deadline. A proposal opens a 24-hour objection window.",
+                  )}
                 </span>
               </div>
               <p className="muted">
-                Source links are recorded for simulated human review. This demo
-                never fetches or authenticates them.
+                {t(
+                  "Source links are recorded for simulated human review. This demo never fetches or authenticates them.",
+                )}
               </p>
             </>
           )}
           {step === 3 && (
             <>
-              <p>One final look before your promise is committed.</p>
+              <p>{t("One final look before your promise is committed.")}</p>
               <dl className="review-list">
-                <dt>The condition</dt>
+                <dt>{t("The condition")}</dt>
                 <dd>{form.condition}</dd>
-                <dt>Deadline</dt>
-                <dd>{date(fromDateInput(form.deadline))}</dd>
-                <dt>The gift</dt>
+                <dt>{t("Deadline")}</dt>
+                <dd>{t(date(fromDateInput(form.deadline)))}</dd>
+                <dt>{t("The gift")}</dt>
                 <dd>
-                  {distributionText(buildTerms().distribution)} · {money(total)}{" "}
-                  total
+                  {t(distributionText(buildTerms().distribution))}
+                  {t(" \u00B7 ")}
+                  {t(money(total))}
+                  {t(" ")}
+                  {t("total")}
                 </dd>
-                <dt>Evidence requirements</dt>
+                <dt>{t("Evidence requirements")}</dt>
                 <dd>{form.criteria}</dd>
-                <dt>Suggested source</dt>
+                <dt>{t("Suggested source")}</dt>
                 <dd>{form.source}</dd>
-                <dt>Funding from</dt>
+                <dt>{t("Funding from")}</dt>
                 <dd>
-                  {state.users[actor].name}’s demo wallet · exact debit{" "}
-                  {money(total)}
+                  {t(state.users[actor].name)}
+                  {t("\u2019s demo wallet \u00B7 exact debit")}
+                  {t(" ")}
+                  {t(money(total))}
                 </dd>
               </dl>
               <div className="inline-note">
-                Material terms are locked after funding. Committed funds cannot
-                be withdrawn or cancelled. If the condition fails, all funds
-                return to you. Unused first-N slots are refunded; a successful
-                public wish with no recipients is fully refunded. Advancing time
-                alone never releases funds.
+                {t(
+                  "Material terms are locked after funding. Committed funds cannot be withdrawn or cancelled. If the condition fails, all funds return to you. Unused first-N slots are refunded; a successful public wish with no recipients is fully refunded. Advancing time alone never releases funds.",
+                )}
               </div>
               <label className="checkbox-line">
                 <input
@@ -551,19 +589,23 @@ export function Create() {
                   onChange={(e) => setConfirmed(e.target.checked)}
                 />
                 <span>
-                  I understand this is a simulation. No real money, escrow,
-                  identity, or payment is involved.
+                  {t(
+                    "I understand this is a simulation. No real money, escrow, identity, or payment is involved.",
+                  )}
                 </span>
               </label>
-              {errors.confirmed && (
-                <p className="field-error">{errors.confirmed}</p>
+              {t(
+                errors.confirmed && (
+                  <p className="field-error">{t(errors.confirmed)}</p>
+                ),
               )}
             </>
           )}
           {Object.keys(errors).length > 0 && step === 3 && (
             <p className="field-error" role="alert">
-              Please check the highlighted fields. Use Back to revise earlier
-              steps.
+              {t(
+                "Please check the highlighted fields. Use Back to revise earlier steps.",
+              )}
             </p>
           )}
           <div className="wizard-actions">
@@ -577,14 +619,16 @@ export function Create() {
               }}
             >
               <ArrowLeft size={16} />
-              Back
+              {t("Back")}
             </button>
             <button type="submit" className="button primary" disabled={busy}>
-              {step === 3
-                ? busy
-                  ? "Committing…"
-                  : `Commit ${money(total)} demo funds`
-                : "Continue"}
+              {t(
+                step === 3
+                  ? busy
+                    ? "Committing…"
+                    : `Commit ${money(total)} demo funds`
+                  : "Continue",
+              )}
               {step === 3 ? (
                 <LockKeyhole size={16} />
               ) : (
@@ -594,27 +638,32 @@ export function Create() {
           </div>
         </form>
         <aside className="live-summary">
-          <span className="eyebrow">YOUR PROMISE, TAKING SHAPE</span>
+          <span className="eyebrow">{t("YOUR PROMISE, TAKING SHAPE")}</span>
           <div className="summary-sprout">
             <Sprout size={35} />
           </div>
-          <h3>{form.title || "Something worth celebrating."}</h3>
-          <p>If {form.condition || "your meaningful moment happens…"}</p>
+          <h3>{form.title || t("Something worth celebrating.")}</h3>
+          <p>
+            {t("If ")}
+            {form.condition || t("your meaningful moment happens…")}
+          </p>
           <div className="summary-gift">
-            <small>THEN I’LL GIVE</small>
-            <strong>{money(total)}</strong>
-            <span>in fully committed demo funds</span>
+            <small>{t("THEN I\u2019LL GIVE")}</small>
+            <strong>{t(money(total))}</strong>
+            <span>{t("in fully committed demo funds")}</span>
           </div>
           <p>
-            {form.mode === "first"
-              ? `${money(total && Number(form.slots) ? total / Number(form.slots) : 0)} each for the first ${form.slots || "—"} people.`
-              : form.mode === "split"
-                ? "Shared equally among everyone who joins."
-                : `One gift for ${state.users[form.recipient]?.name || "someone special"}.`}
+            {t(
+              form.mode === "first"
+                ? `${money(total && Number(form.slots) ? total / Number(form.slots) : 0)} each for the first ${form.slots || "—"} people.`
+                : form.mode === "split"
+                  ? "Shared equally among everyone who joins."
+                  : `One gift for ${state.users[form.recipient]?.name || "someone special"}.`,
+            )}
           </p>
           <div className="summary-footer">
             <Check size={16} />
-            Free for recipients. Always.
+            {t("Free for recipients. Always.")}
           </div>
         </aside>
       </div>

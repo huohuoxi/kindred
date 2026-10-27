@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/context";
 import { useState } from "react";
 import {
   Clock3,
@@ -7,9 +8,10 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { useApp } from "../app/Provider";
-import { DAY, GRACE, date } from "../domain/model";
+import { DAY, GRACE } from "../domain/model";
 import type { Wish } from "../domain/model";
 export function DemoControls({ wish }: { wish?: Wish }) {
+  const { t, date } = useLocale();
   const { state, run, resetDemo } = useApp();
   const [target, setTarget] = useState<number | null>(null);
   const [reset, setReset] = useState(false);
@@ -24,16 +26,18 @@ export function DemoControls({ wish }: { wish?: Wish }) {
       <div className="demo-controls-title">
         <Clock3 size={19} />
         <div>
-          <h3>Demo controls</h3>
-          <p>Simulated time and human review. You control the story.</p>
+          <h3>{t("Demo controls")}</h3>
+          <p>{t("Simulated time and human review. You control the story.")}</p>
         </div>
-        <span className="demo-chip">SIMULATION</span>
+        <span className="demo-chip">{t("SIMULATION")}</span>
       </div>
       <div className="clock-display">
-        <small>SHARED DEMO CLOCK · UTC</small>
-        <strong>{date(state.clock)}</strong>
+        <small>{t("SHARED DEMO CLOCK \u00B7 UTC")}</small>
+        <strong>{t(date(state.clock))}</strong>
         <p>
-          Time advances only here. Changes affect every wish in this browser.
+          {t(
+            "Time advances only here. Changes affect every wish in this browser.",
+          )}
         </p>
       </div>
       <div className="demo-action-grid">
@@ -42,49 +46,52 @@ export function DemoControls({ wish }: { wish?: Wish }) {
               { label: "To event deadline", value: wish.deadline },
               {
                 label: "Past evidence grace period",
-                value: wish.deadline + GRACE + 60_000,
+                value: wish.deadline + GRACE + 60000,
               },
               ...(proposal
                 ? [
                     {
                       label: "Past review window",
-                      value: proposal.reviewAt + 60_000,
+                      value: proposal.reviewAt + 60000,
                     },
                   ]
                 : []),
             ]
           : [{ label: "Advance one day", value: state.clock + DAY }]
-        ).map((t) => (
+        ).map((clockTarget) => (
           <button
-            key={t.label}
+            key={clockTarget.label}
             className="button secondary"
-            disabled={t.value <= state.clock}
+            disabled={clockTarget.value <= state.clock}
             onClick={() => {
-              setTarget(t.value);
+              setTarget(clockTarget.value);
               setReset(false);
             }}
           >
             <FastForward size={15} />
-            {t.label}
+            {t(clockTarget.label)}
           </button>
         ))}
       </div>
       {target && (
         <div className="confirmation" role="status">
-          <strong>Move the clock forward for all wishes?</strong>
+          <strong>{t("Move the clock forward for all wishes?")}</strong>
           <p>
-            New simulated time: <b>{date(target)}</b>. Enrollment deadlines may
-            close. Time cannot move backward. No funds move automatically.
+            {t("New simulated time: ")}
+            <b>{t(date(target))}</b>
+            {t(
+              ". Enrollment deadlines may close. Time cannot move backward. No funds move automatically.",
+            )}
           </p>
           <div className="button-row">
             <button className="button primary" onClick={() => advance(target)}>
-              Confirm time advance
+              {t("Confirm time advance")}
             </button>
             <button
               className="button secondary"
               onClick={() => setTarget(null)}
             >
-              Cancel
+              {t("Cancel")}
             </button>
           </div>
         </div>
@@ -93,22 +100,27 @@ export function DemoControls({ wish }: { wish?: Wish }) {
         <div className="review-control">
           <h4>
             <ShieldCheck size={17} />
-            Simulated human reviewer
+            {t("Simulated human reviewer")}
           </h4>
           <p>
-            {state.clock < proposal.reviewAt
-              ? `Objections remain open until ${date(proposal.reviewAt)}.`
-              : "The objection window has ended. Finalizing will settle this wish exactly once."}
+            {t(
+              state.clock < proposal.reviewAt
+                ? `Objections remain open until ${date(proposal.reviewAt)}.`
+                : "The objection window has ended. Finalizing will settle this wish exactly once.",
+            )}
           </p>
           <button
             className="button primary"
             disabled={state.clock < proposal.reviewAt}
             onClick={() => run({ type: "finalizeProposal", wishId: wish.id })}
           >
-            Finalize{" "}
-            {proposal.outcome === "success"
-              ? "YES · send gifts"
-              : "NO · refund creator"}
+            {t("Finalize")}
+            {t(" ")}
+            {t(
+              proposal.outcome === "success"
+                ? "YES · send gifts"
+                : "NO · refund creator",
+            )}
           </button>
         </div>
       )}
@@ -116,33 +128,34 @@ export function DemoControls({ wish }: { wish?: Wish }) {
         <div className="review-control">
           <h4>
             <Gavel size={17} />
-            Simulated human arbitrator
+            {t("Simulated human arbitrator")}
           </h4>
           <p>
-            Normal finalization is blocked. Review the evidence and objections,
-            then record a reasoned decision.
+            {t(
+              "Normal finalization is blocked. Review the evidence and objections, then record a reasoned decision.",
+            )}
           </p>
           <label className="field">
-            Decision
+            {t("Decision")}
             <select
               value={decision}
               onChange={(e) => setDecision(e.target.value)}
             >
-              <option value="uphold">Uphold proposal and settle</option>
+              <option value="uphold">{t("Uphold proposal and settle")}</option>
               <option value="reject">
-                Reject proposal and keep funds held
+                {t("Reject proposal and keep funds held")}
               </option>
             </select>
           </label>
           <label className="field">
-            Rationale
+            {t("Rationale")}
             <textarea
               rows={3}
               minLength={5}
               maxLength={1000}
               value={rationale}
               onChange={(e) => setRationale(e.target.value)}
-              placeholder="Explain this simulated decision…"
+              placeholder={t("Explain this simulated decision…")}
             />
           </label>
           <button
@@ -160,12 +173,12 @@ export function DemoControls({ wish }: { wish?: Wish }) {
                 setRationale("");
             }}
           >
-            Record arbitration decision
+            {t("Record arbitration decision")}
           </button>
           <small>
-            Rejecting never reopens enrollment. After the evidence cutoff, only
-            a new NO proposal may be submitted. This is simplified demo
-            governance.
+            {t(
+              "Rejecting never reopens enrollment. After the evidence cutoff, only a new NO proposal may be submitted. This is simplified demo governance.",
+            )}
           </small>
         </div>
       )}
@@ -178,16 +191,21 @@ export function DemoControls({ wish }: { wish?: Wish }) {
           }}
         >
           <RotateCcw size={14} />
-          Reset demo
+          {t("Reset demo")}
         </button>
-        <small>Identity switching is a demo control, not authentication.</small>
+        <small>
+          {t("Identity switching is a demo control, not authentication.")}
+        </small>
       </div>
       {reset && (
         <div className="confirmation danger">
-          <strong>Delete all browser-local creations and progress?</strong>
+          <strong>
+            {t("Delete all browser-local creations and progress?")}
+          </strong>
           <p>
-            This restores a fresh seed demo and resets the clock. This action
-            cannot be undone.
+            {t(
+              "This restores a fresh seed demo and resets the clock. This action cannot be undone.",
+            )}
           </p>
           <div className="button-row">
             <button
@@ -197,13 +215,13 @@ export function DemoControls({ wish }: { wish?: Wish }) {
                 resetDemo();
               }}
             >
-              Delete local progress & reset
+              {t("Delete local progress & reset")}
             </button>
             <button
               className="button secondary"
               onClick={() => setReset(false)}
             >
-              Keep my progress
+              {t("Keep my progress")}
             </button>
           </div>
         </div>

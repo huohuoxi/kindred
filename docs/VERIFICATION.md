@@ -17,7 +17,7 @@ Date: **October 27, 2026**. Checks were performed locally; there is no remote CI
 - Full refunds, success settlement, zero terminal escrow, principal conservation, repeated settlement after reload, and repeated settlement command IDs.
 - Persistence round trips, incompatible/malformed state, and tampered ledger/receipt rejection.
 
-**Final result:** 43 tests passed; strict TypeScript checking and the production build passed. Vite reported harmless third-party Zod annotation warnings and removed those comments during bundling.
+**Final result:** 51 tests passed; strict TypeScript checking and the production build passed. Vite reported harmless third-party Zod annotation warnings and removed those comments during bundling.
 
 The production build was also run with `BASE_PATH=/kindred/`.
 
@@ -48,3 +48,9 @@ Screenshots in `docs/screenshots/` are actual browser captures, not mockups.
 Reduced-motion behavior is implemented with CSS and was inspected in source; a separate operating-system reduced-motion preference was not toggled. Native Web Share’s external destination flow was not completed. Clipboard-denial and storage-quota failures are handled in code but were not forced through browser settings. This is not a full assistive-technology or cross-browser certification.
 
 The GitHub workflows and publishing instructions are prepared locally. GitHub authentication, remote repository creation, actual Actions execution, DNS, and public deployment remain unperformed because no destination was supplied. No public repository or live-demo URL is claimed.
+
+## Chinese interface follow-up
+
+The localization suite adds eight checks for the default Chinese preference, explicit English preference, unavailable storage, dictionary behavior, exact monetary interpolation, participant singular/plural forms, personal-gift restrictions, custom text, and UTC date presentation. The complete suite now has **51 passing tests**.
+
+Browser checks confirmed first-visit Chinese, English preference after reload, one-click return to Chinese, Chinese search, Chinese inline validation, four-step creation review, and preservation of a typed draft while switching languages. Seeded detail and share text were checked in Chinese. The 390px Chinese homepage had no horizontal overflow. The existing wallet balance and seeded demo progress were retained throughout. Chinese desktop/mobile screenshots are saved alongside the original English captures.

@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/context";
 import {
   ArrowRight,
   Gift,
@@ -8,18 +9,20 @@ import {
   Sprout,
 } from "lucide-react";
 export function HowItWorks() {
+  const { t } = useLocale();
   return (
     <div className="how-page">
       <div className="page-heading centered">
-        <span className="eyebrow">PROMISES WORTH KEEPING.</span>
+        <span className="eyebrow">{t("PROMISES WORTH KEEPING.")}</span>
         <h1>
-          A gift for a future
+          {t("A gift for a future")}
           <br />
-          you believe in.
+          {t("you believe in.")}
         </h1>
         <p>
-          One person makes a promise. Others join for free.
-          <br />A clear condition decides what happens next.
+          {t("One person makes a promise. Others join for free.")}
+          <br />
+          {t("A clear condition decides what happens next.")}
         </p>
       </div>
       <div className="how-steps">
@@ -42,142 +45,145 @@ export function HowItWorks() {
         ].map(({ icon: Icon, title, text }) => (
           <article key={title}>
             <Icon size={27} />
-            <h2>{title}</h2>
-            <p>{text}</p>
+            <h2>{t(title)}</h2>
+            <p>{t(text)}</p>
           </article>
         ))}
       </div>
       <section className="how-section">
         <div>
-          <span className="eyebrow">CLEAR RULES. ROOM FOR A CLOSER LOOK.</span>
+          <span className="eyebrow">
+            {t("CLEAR RULES. ROOM FOR A CLOSER LOOK.")}
+          </span>
           <h2>
-            Trust starts before
+            {t("Trust starts before")}
             <br />
-            the promise is made.
+            {t("the promise is made.")}
           </h2>
         </div>
         <div>
           <p>
-            Terms lock at funding. Enrollment closes at the event deadline or
-            first proposal, whichever happens first, and never reopens. The
-            event must occur by its deadline. Evidence may arrive through 72
-            hours after that deadline.
+            {t(
+              "Terms lock at funding. Enrollment closes at the event deadline or first proposal, whichever happens first, and never reopens. The event must occur by its deadline. Evidence may arrive through 72 hours after that deadline.",
+            )}
           </p>
           <p>
-            A YES proposal needs a summary, HTTP(S) source, and valid occurrence
-            time. A NO proposal becomes available only after the evidence grace
-            period. Every proposal has a 24-hour objection window. The creator,
-            enrolled people, and designated recipients may object before it
-            closes.
+            {t(
+              "A YES proposal needs a summary, HTTP(S) source, and valid occurrence time. A NO proposal becomes available only after the evidence grace period. Every proposal has a 24-hour objection window. The creator, enrolled people, and designated recipients may object before it closes.",
+            )}
           </p>
           <p>
-            An objection holds all funds. A simulated human arbitrator can
-            uphold and settle, or reject the proposal and keep the funds held.
-            After rejection, enrollment stays closed; only NO can be newly
-            proposed once the evidence cutoff has passed. This is simplified
-            demo policy, not production dispute governance.
+            {t(
+              "An objection holds all funds. A simulated human arbitrator can uphold and settle, or reject the proposal and keep the funds held. After rejection, enrollment stays closed; only NO can be newly proposed once the evidence cutoff has passed. This is simplified demo policy, not production dispute governance.",
+            )}
           </p>
           <p>
-            Advancing the demo clock never transfers money by itself. A reviewer
-            must finalize, or an arbitrator must uphold, before funds move.
+            {t(
+              "Advancing the demo clock never transfers money by itself. A reviewer must finalize, or an arbitrator must uphold, before funds move.",
+            )}
           </p>
         </div>
       </section>
       <section className="how-section business">
         <div>
-          <span className="eyebrow">A FUTURE PROPOSAL</span>
-          <h2>Business model</h2>
+          <span className="eyebrow">{t("A FUTURE PROPOSAL")}</span>
+          <h2>{t("Business model")}</h2>
           <Sprout size={45} />
         </div>
         <div>
           <p>
-            In a future authorized operating model, appropriate financial
-            partners might hold committed money. Potential net returns could
-            help cover operating costs and lower fees. Returns are uncertain;
-            costs, losses, reserves, and liquidity needs matter.
+            {t(
+              "In a future authorized operating model, appropriate financial partners might hold committed money. Potential net returns could help cover operating costs and lower fees. Returns are uncertain; costs, losses, reserves, and liquidity needs matter.",
+            )}
           </p>
           <p>
-            Lending and mortgage-related assets are possibilities in the
-            original vision. They carry credit risk, duration mismatch, and
-            liquidity risk. They are not equivalent to cash, and are neither
-            implemented nor endorsed allocations here.
+            {t(
+              "Lending and mortgage-related assets are possibilities in the original vision. They carry credit risk, duration mismatch, and liquidity risk. They are not equivalent to cash, and are neither implemented nor endorsed allocations here.",
+            )}
           </p>
           <div className="principal-note">
-            <strong>Principal remains owed. Always.</strong>
+            <strong>{t("Principal remains owed. Always.")}</strong>
             <p>
-              Every committed dollar belongs in payout or refund obligations.
-              Platform revenue would be distinct from that principal. Investment
-              income cannot guarantee principal, liquidity, or free operation.
+              {t(
+                "Every committed dollar belongs in payout or refund obligations. Platform revenue would be distinct from that principal. Investment income cannot guarantee principal, liquidity, or free operation.",
+              )}
             </p>
           </div>
-          <div className="growth-loop" aria-label="Hypothetical growth loop">
-            <span>More wishes</span>
+          <div
+            className="growth-loop"
+            aria-label={t("Hypothetical growth loop")}
+          >
+            <span>{t("More wishes")}</span>
             <ArrowRight size={14} />
-            <span>More commitments</span>
+            <span>{t("More commitments")}</span>
             <ArrowRight size={14} />
-            <span>Potential net returns</span>
+            <span>{t("Potential net returns")}</span>
             <ArrowRight size={14} />
-            <span>Potentially lower fees</span>
+            <span>{t("Potentially lower fees")}</span>
             <ArrowRight size={14} />
-            <span>More participation</span>
+            <span>{t("More participation")}</span>
           </div>
           <small>
-            This growth loop is a hypothesis. No fees, interest, or investment
-            returns accrue in this demo.
+            {t(
+              "This growth loop is a hypothesis. No fees, interest, or investment returns accrue in this demo.",
+            )}
           </small>
         </div>
       </section>
       <section className="how-section">
         <div>
-          <span className="eyebrow">LOOKING FURTHER AHEAD</span>
+          <span className="eyebrow">{t("LOOKING FURTHER AHEAD")}</span>
           <h2>
-            Future AI
+            {t("Future AI")}
             <br />
-            liquidity planning
+            {t("liquidity planning")}
           </h2>
           <Sparkles size={36} />
         </div>
         <div>
           <p>
-            Forecasting could estimate when principal might be needed: event
-            probabilities, likely timing, correlated outcomes, payout and refund
-            calendars, stress scenarios, reserve levels, and asset maturities.
+            {t(
+              "Forecasting could estimate when principal might be needed: event probabilities, likely timing, correlated outcomes, payout and refund calendars, stress scenarios, reserve levels, and asset maturities.",
+            )}
           </p>
           <div className="liquidity-timeline">
             <div>
               <Clock3 size={17} />
-              <strong>Today</strong>
-              <span>Committed principal held</span>
+              <strong>{t("Today")}</strong>
+              <span>{t("Committed principal held")}</span>
             </div>
             <div>
               <Clock3 size={17} />
-              <strong>Near-term events</strong>
-              <span>Liquid reserves for gifts and refunds</span>
+              <strong>{t("Near-term events")}</strong>
+              <span>{t("Liquid reserves for gifts and refunds")}</span>
             </div>
             <div>
               <Clock3 size={17} />
-              <strong>Later obligations</strong>
-              <span>Match asset maturities to stress-tested needs</span>
+              <strong>{t("Later obligations")}</strong>
+              <span>{t("Match asset maturities to stress-tested needs")}</span>
             </div>
           </div>
           <p>
             <strong>
-              Forecasting concerns when principal is needed, not whether it is
-              owed.
-            </strong>{" "}
-            Correlated events may create simultaneous obligations. Forecasts
-            cannot guarantee liquidity or replace appropriate reserves and
-            oversight.
+              {t(
+                "Forecasting concerns when principal is needed, not whether it is owed.",
+              )}
+            </strong>
+            {t(" ")}
+            {t(
+              "Correlated events may create simultaneous obligations. Forecasts cannot guarantee liquidity or replace appropriate reserves and oversight.",
+            )}
           </p>
           <small>
-            This is an illustrative concept. There is no AI call, investment
-            dashboard, or live liquidity model.
+            {t(
+              "This is an illustrative concept. There is no AI call, investment dashboard, or live liquidity model.",
+            )}
           </small>
         </div>
       </section>
       <section className="faq-section">
-        <span className="eyebrow">A FEW THINGS YOU MIGHT WONDER</span>
-        <h2>Good questions.</h2>
+        <span className="eyebrow">{t("A FEW THINGS YOU MIGHT WONDER")}</span>
+        <h2>{t("Good questions.")}</h2>
         {[
           [
             "Is this betting or fundraising?",
@@ -221,22 +227,23 @@ export function HowItWorks() {
           ],
         ].map(([q, a]) => (
           <details key={q}>
-            <summary>{q}</summary>
-            <p>{a}</p>
+            <summary>{t(q)}</summary>
+            <p>{t(a)}</p>
           </details>
         ))}
       </section>
       <div className="bottom-invite">
         <div>
           <h2>
-            A future worth celebrating
+            {t("A future worth celebrating")}
             <br />
-            starts with a little promise.
+            {t("starts with a little promise.")}
           </h2>
-          <p>Try it with demo funds and three fictional people.</p>
+          <p>{t("Try it with demo funds and three fictional people.")}</p>
         </div>
         <a className="button primary" href="#/create">
-          Create a wish <ArrowRight size={17} />
+          {t("Create a wish ")}
+          <ArrowRight size={17} />
         </a>
       </div>
     </div>

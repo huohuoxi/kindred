@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/context";
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import {
@@ -16,7 +17,6 @@ import {
   distributionText,
   participants,
   key,
-  date,
 } from "../domain/model";
 import { useApp } from "../app/Provider";
 export function Modal({
@@ -30,6 +30,7 @@ export function Modal({
   onClose: () => void;
   wide?: boolean;
 }) {
+  const { t } = useLocale();
   const ref = useRef<HTMLDialogElement>(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
@@ -61,16 +62,16 @@ export function Modal({
       }}
     >
       <div className="modal-head">
-        <h2 id="dialog-title">{title}</h2>
+        <h2 id="dialog-title">{t(title)}</h2>
         <button
           className="icon-button"
-          aria-label="Close dialog"
+          aria-label={t("Close dialog")}
           onClick={onClose}
         >
           <X size={20} />
         </button>
       </div>
-      {children}
+      {t(children)}
     </dialog>
   );
 }
@@ -81,26 +82,30 @@ export function Avatar({
   user: string;
   small?: boolean;
 }) {
+  const { t } = useLocale();
   const { state } = useApp();
   const person = state.users[user];
   return (
     <span
       className={`avatar ${small ? "small" : ""}`}
       style={{ backgroundColor: person?.color }}
-      aria-label={person?.name}
+      aria-label={t(person?.name)}
     >
-      {person?.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")}
+      {t(
+        person?.name
+          .split(" ")
+          .map((n) => n[0])
+          .join(""),
+      )}
     </span>
   );
 }
 export function Status({ wish }: { wish: Wish }) {
+  const { t } = useLocale();
   return (
     <span className={`status ${wish.status}`}>
       <span />
-      {badge(wish)}
+      {t(badge(wish))}
     </span>
   );
 }
@@ -264,6 +269,7 @@ export function Illustration({
   );
 }
 export function WishCard({ wish }: { wish: Wish }) {
+  const { t, locale, wishText } = useLocale();
   const { state, run } = useApp();
   const followed = state.follows.includes(key(wish.id, state.currentUser));
   const joined = participants(state, wish.id);
@@ -275,10 +281,10 @@ export function WishCard({ wish }: { wish: Wish }) {
         <a href={`#/wish/${wish.id}`} tabIndex={-1} aria-hidden="true">
           <Illustration category={wish.category} />
         </a>
-        <span className="category-tag">{wish.category}</span>
+        <span className="category-tag">{t(wish.category)}</span>
         <button
           className={`save-button ${followed ? "saved" : ""}`}
-          aria-label={`${followed ? "Unfollow" : "Follow"} ${wish.title}`}
+          aria-label={`${t(followed ? "Unfollow" : "Follow")} ${wishText(wish, "title")}`}
           aria-pressed={followed}
           onClick={() => run({ type: "toggleFollow", wishId: wish.id })}
         >
@@ -288,14 +294,15 @@ export function WishCard({ wish }: { wish: Wish }) {
       <div className="card-body">
         <div className="creator">
           <Avatar user={wish.creator} small />
-          <span>{state.users[wish.creator].name}</span>
+          <span>{t(state.users[wish.creator].name)}</span>
           <Status wish={wish} />
         </div>
         <a className="card-title" href={`#/wish/${wish.id}`}>
-          <h3>{wish.title}</h3>
+          <h3>{wishText(wish, "title")}</h3>
         </a>
         <p className="card-condition">
-          If {wish.condition.replace(/^The /, "the ")}
+          {t("If ")}
+          {wishText(wish, "condition").replace(/^The /, "the ")}
         </p>
         <div className="card-gift">
           <span className="gift-icon">
@@ -303,23 +310,29 @@ export function WishCard({ wish }: { wish: Wish }) {
           </span>
           <div>
             <strong>
-              {money(wish.committed)} <span>demo funds committed</span>
+              {t(money(wish.committed))}{" "}
+              <span>{t("demo funds committed")}</span>
             </strong>
-            <small>{distributionText(wish.distribution)}</small>
+            <small>{t(distributionText(wish.distribution))}</small>
           </div>
         </div>
         <div className="card-bottom">
           <span>
-            {wish.distribution.mode === "personal"
-              ? "One personal gift"
-              : `${joined.length} ${wish.distribution.mode === "first" ? `/ ${wish.distribution.slots} slots joined` : joined.length === 1 ? "person joined" : "people joined"}`}
+            {t(
+              wish.distribution.mode === "personal"
+                ? "One personal gift"
+                : `${joined.length} ${wish.distribution.mode === "first" ? `/ ${wish.distribution.slots} slots joined` : joined.length === 1 ? "person joined" : "people joined"}`,
+            )}
           </span>
           <span>
-            {new Intl.DateTimeFormat("en-US", {
-              month: "short",
-              day: "numeric",
-              timeZone: "UTC",
-            }).format(wish.deadline)}{" "}
+            {t(
+              new Intl.DateTimeFormat(locale, {
+                month: "short",
+                day: "numeric",
+                timeZone: "UTC",
+              }).format(wish.deadline),
+            )}
+            {t(" ")}
             <ArrowUpRight size={14} />
           </span>
         </div>
@@ -328,35 +341,42 @@ export function WishCard({ wish }: { wish: Wish }) {
   );
 }
 export function Empty({ title, text }: { title: string; text: string }) {
+  const { t } = useLocale();
   return (
     <div className="empty">
       <Leaf size={32} />
-      <h3>{title}</h3>
-      <p>{text}</p>
+      <h3>{t(title)}</h3>
+      <p>{t(text)}</p>
       <a href="#/create" className="text-link">
-        Create a wish <ArrowRight size={16} />
+        {t("Create a wish ")}
+        <ArrowRight size={16} />
       </a>
     </div>
   );
 }
 export function TrustNote() {
+  const { t } = useLocale();
   return (
     <div className="trust-note">
       <ShieldCheck size={17} />
       <span>
-        Fully committed demo funds. Free to join. Clear rules from the start.
+        {t(
+          "Fully committed demo funds. Free to join. Clear rules from the start.",
+        )}
       </span>
     </div>
   );
 }
 export function TimeNote({ value }: { value: number }) {
-  return <time dateTime={new Date(value).toISOString()}>{date(value)}</time>;
+  const { t, date } = useLocale();
+  return <time dateTime={new Date(value).toISOString()}>{t(date(value))}</time>;
 }
 export function CheckLine({ children }: { children: ReactNode }) {
+  const { t } = useLocale();
   return (
     <div className="check-line">
       <Check size={16} />
-      {children}
+      {t(children)}
     </div>
   );
 }

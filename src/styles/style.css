@@ -4040,3 +4040,118 @@ nav a.active:after {
     font-size: 10px;
   }
 }
+
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--green);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.language-toggle:hover {
+  background: var(--mint);
+}
+.language-toggle > span {
+  font-size: 10px;
+  opacity: 0.8;
+}
+html[lang="zh-CN"] {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+}
+html[lang="zh-CN"] h1,
+html[lang="zh-CN"] h2,
+html[lang="zh-CN"] .card-title h3,
+html[lang="zh-CN"] .live-summary h3,
+html[lang="zh-CN"] .empty h3 {
+  font-family: "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+  letter-spacing: 0.015em;
+  line-height: 1.4;
+}
+html[lang="zh-CN"] .hero h1 {
+  font-size: 47px;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+}
+html[lang="zh-CN"] .eyebrow {
+  letter-spacing: 1.5px;
+}
+html[lang="zh-CN"] .feature-promise h2 {
+  font-size: 26px;
+  max-width: 260px;
+}
+html[lang="zh-CN"] .card-title h3 {
+  font-size: 23px;
+}
+html[lang="zh-CN"] .card-gift strong > span {
+  font-size: 10px;
+}
+html[lang="zh-CN"] .hero-fine,
+html[lang="zh-CN"] .principles {
+  font-size: 11px;
+}
+html[lang="zh-CN"] .header-inner {
+  gap: 32px;
+}
+@media (min-width: 1281px) and (max-width: 1500px) {
+  .header-right > .demo-badge {
+    display: none;
+  }
+}
+@media (max-width: 1024px) {
+  html[lang="zh-CN"] .hero h1 {
+    font-size: 38px;
+  }
+  .header-right {
+    gap: 10px;
+  }
+}
+@media (max-width: 760px) {
+  .language-toggle {
+    font-size: 10px;
+    padding: 5px 7px;
+  }
+  .language-toggle > span {
+    display: none;
+  }
+  html[lang="zh-CN"] .hero h1 {
+    font-size: 32px;
+  }
+  html[lang="zh-CN"] .hero-fine,
+  html[lang="zh-CN"] .principles {
+    font-size: 10px;
+  }
+}
+@media (max-width: 540px) {
+  .header-right {
+    gap: 7px;
+  }
+  .language-toggle {
+    min-height: 32px;
+    font-size: 10px;
+  }
+  html[lang="zh-CN"] .header-inner {
+    gap: 12px;
+  }
+  html[lang="zh-CN"] .hero h1 {
+    font-size: 35px;
+  }
+  html[lang="zh-CN"] .feature-promise h2 {
+    font-size: 24px;
+    max-width: 255px;
+  }
+  html[lang="zh-CN"] .hero h1 br {
+    display: initial;
+  }
+  html[lang="zh-CN"] .section-heading h2 {
+    font-size: 28px;
+  }
+}

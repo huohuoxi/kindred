@@ -1,3 +1,4 @@
+import { useLocale } from "../i18n/context";
 import { useState } from "react";
 import {
   ArrowDownLeft,
@@ -7,9 +8,10 @@ import {
   Gift,
 } from "lucide-react";
 import { useApp } from "../app/Provider";
-import { balance, wallet, escrow, money, date, key } from "../domain/model";
+import { balance, wallet, escrow, money, key } from "../domain/model";
 import { Avatar, WishCard, Empty } from "../components/UI";
 export function MyWishes() {
+  const { t, date, wishText } = useLocale();
   const { state } = useApp();
   const [tab, setTab] = useState("Created");
   const user = state.currentUser;
@@ -44,44 +46,51 @@ export function MyWishes() {
   return (
     <div className="my-page">
       <div className="page-heading">
-        <span className="eyebrow">THE GOOD THINGS YOU’RE PART OF</span>
-        <h1>Your promises. Your people.</h1>
-        <p>Creating, joining, or simply rooting for something good.</p>
+        <span className="eyebrow">
+          {t("THE GOOD THINGS YOU\u2019RE PART OF")}
+        </span>
+        <h1>{t("Your promises. Your people.")}</h1>
+        <p>{t("Creating, joining, or simply rooting for something good.")}</p>
       </div>
       <div className="wallet-heading">
         <Avatar user={user} />
-        <strong>{state.users[user].name}’s demo wallet</strong>
-        <span>No real money · identity switching is not authentication</span>
+        <strong>
+          {t(state.users[user].name)}
+          {t("\u2019s demo wallet")}
+        </strong>
+        <span>
+          {t("No real money \u00B7 identity switching is not authentication")}
+        </span>
       </div>
       <div className="wallet-cards">
         <div>
           <Wallet size={21} />
-          <small>AVAILABLE BALANCE</small>
-          <strong>{money(balance(state, wallet(user)))}</strong>
-          <span>Ready for your next promise</span>
+          <small>{t("AVAILABLE BALANCE")}</small>
+          <strong>{t(money(balance(state, wallet(user))))}</strong>
+          <span>{t("Ready for your next promise")}</span>
         </div>
         <div>
           <LockKeyhole size={21} />
-          <small>HELD FOR YOUR WISHES</small>
-          <strong>{money(held)}</strong>
-          <span>Already committed, still owed</span>
+          <small>{t("HELD FOR YOUR WISHES")}</small>
+          <strong>{t(money(held))}</strong>
+          <span>{t("Already committed, still owed")}</span>
         </div>
         <div>
           <Gift size={21} />
-          <small>GIFTS RECEIVED · LIFETIME</small>
-          <strong>{money(received)}</strong>
-          <span>Already included in available balance</span>
+          <small>{t("GIFTS RECEIVED \u00B7 LIFETIME")}</small>
+          <strong>{t(money(received))}</strong>
+          <span>{t("Already included in available balance")}</span>
         </div>
       </div>
-      <div className="tabs" aria-label="Your wishes">
-        {["Created", "Joined & designated", "Following"].map((t) => (
+      <div className="tabs" aria-label={t("Your wishes")}>
+        {["Created", "Joined & designated", "Following"].map((tabName) => (
           <button
-            aria-pressed={tab === t}
-            className={tab === t ? "active" : ""}
-            key={t}
-            onClick={() => setTab(t)}
+            aria-pressed={tab === tabName}
+            className={tab === tabName ? "active" : ""}
+            key={tabName}
+            onClick={() => setTab(tabName)}
           >
-            {t}
+            {t(tabName)}
           </button>
         ))}
       </div>
@@ -93,17 +102,23 @@ export function MyWishes() {
         </div>
       ) : (
         <Empty
-          title={`No wishes ${tab === "Created" ? "created" : tab === "Following" ? "followed" : "joined"} yet.`}
+          title={t(
+            `No wishes ${tab === "Created" ? "created" : tab === "Following" ? "followed" : "joined"} yet.`,
+          )}
           text="Your next shared celebration could start with one little promise."
         />
       )}
       <section className="activity-section" id="wallet">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">EVERY DEMO CENT, ACCOUNTED FOR</span>
-            <h2>Wallet activity</h2>
+            <span className="eyebrow">
+              {t("EVERY DEMO CENT, ACCOUNTED FOR")}
+            </span>
+            <h2>{t("Wallet activity")}</h2>
           </div>
-          <span className="muted">$1,000 opening demo credit per person</span>
+          <span className="muted">
+            {t("$1,000 opening demo credit per person")}
+          </span>
         </div>
         <div className="transaction-list">
           {txs.map((tx) => {
@@ -125,44 +140,51 @@ export function MyWishes() {
                 </span>
                 <div>
                   <strong>
-                    {tx.kind === "opening"
-                      ? "Opening demo credit"
-                      : tx.kind === "commitment"
-                        ? "Gift fully committed"
-                        : gift
-                          ? "Gift received"
-                          : "Unused or failed-event funds returned"}
+                    {t(
+                      tx.kind === "opening"
+                        ? "Opening demo credit"
+                        : tx.kind === "commitment"
+                          ? "Gift fully committed"
+                          : gift
+                            ? "Gift received"
+                            : "Unused or failed-event funds returned",
+                    )}
                   </strong>
                   {w ? (
-                    <a href={`#/wish/${w.id}`}>{w.title}</a>
+                    <a href={`#/wish/${w.id}`}>{wishText(w, "title")}</a>
                   ) : (
-                    <span>Simulated funding source</span>
+                    <span>{t("Simulated funding source")}</span>
                   )}
                   <small>
-                    {date(tx.at)} · transaction {tx.id}
+                    {t(date(tx.at))}
+                    {t(" \u00B7 transaction ")}
+                    {t(tx.id)}
                   </small>
                 </div>
                 <strong className={delta > 0 ? "positive" : ""}>
-                  {delta > 0 ? "+" : "−"}
-                  {money(Math.abs(delta))}
+                  {t(delta > 0 ? "+" : "−")}
+                  {t(money(Math.abs(delta)))}
                 </strong>
               </div>
             );
           })}
         </div>
         <details className="ledger-details">
-          <summary>Inspect balanced ledger entries</summary>
+          <summary>{t("Inspect balanced ledger entries")}</summary>
           <p className="muted">
-            Each transaction sums to zero. Opening credits debit the fictional
-            funding-source account. No user wallet or wish escrow may become
-            negative.
+            {t(
+              "Each transaction sums to zero. Opening credits debit the fictional funding-source account. No user wallet or wish escrow may become negative.",
+            )}
           </p>
-          {txs.map((t) => (
-            <div className="ledger-row" key={t.id}>
-              <strong>{t.id}</strong>
-              {t.entries.map((e, i) => (
+          {txs.map((ledgerItem) => (
+            <div className="ledger-row" key={ledgerItem.id}>
+              <strong>{t(ledgerItem.id)}</strong>
+              {ledgerItem.entries.map((e, i) => (
                 <code key={i}>
-                  {e.account}: {e.cents} cents
+                  {t(e.account)}
+                  {t(": ")}
+                  {e.cents}
+                  {t(" cents")}
                 </code>
               ))}
             </div>

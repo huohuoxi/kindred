@@ -73,3 +73,7 @@ Seeded detail links are portable and stable. Custom-wish sharing includes the re
 ## Static hosting
 
 Vite reads `BASE_PATH`, defaulting to `/`. Hash routing makes refreshes work without server rewrites. The Pages workflow derives a repository base path, allows an explicit Actions `BASE_PATH` variable for custom domains, and deploys only the default branch. No remote destination or live hosting configuration is assumed.
+
+## Language presentation
+
+`src/i18n` contains the Simplified Chinese dictionary, explicit dynamic-message patterns, UTC date formatting, and a separate React language context. First visits default to `zh`; an explicit English preference is restored from `kindred-language-v1`. Language switching updates HTML language and page metadata without changing domain entities or remounting the current page. Templates use the selected language when first filled. Seeded wish fields are translated for display; custom wish fields retain their stored text. Search includes the displayed localized seed content. No external translation service is used.
